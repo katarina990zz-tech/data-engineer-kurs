@@ -1,0 +1,51 @@
+Domaci 2.1
+
+SELECT match_id, season, home_team, away_team, stadium_name, stadium_capacity, attendance,
+       stadium_capacity - attendance AS empty_seats
+FROM bootcamp.northern_star.matches_flat
+ORDER BY empty_seats DESC
+LIMIT 5;
+-- 2.1.1. zajednicko prvim trima je isti home team, sezona, stadion,relativno blizak broj praznih mesta (isti stadion, relativno slicna posecenost)
+
+SELECT COUNT(DISTINCT referee_name) AS broj_sudija
+FROM bootcamp.northern_star.matches_flat
+WHERE home_team = 'Riverton Athletic';
+--2.1.2 15 sudija
+
+SELECT COUNT(*) AS broj_utakmica
+FROM bootcamp.northern_star.matches_flat
+WHERE away_goals_ht > home_goals_ht
+   AND home_goals > away_goals;
+--2.1.3 15 utakmica
+
+SELECT match_id, season, home_team, away_team, home_goals_ht, away_goals_ht, home_goals, away_goals,
+       (home_goals - home_goals_ht) + (away_goals - away_goals_ht) AS golovi_2_poluvreme
+FROM bootcamp.northern_star.matches_flat
+ORDER BY golovi_2_poluvreme DESC
+LIMIT 1;
+--2.1.4 Igrao Northport United-Newbury Forest, rezultat na poluvremenu 1:0, a na kraju 6:3
+
+SELECT COUNT(*) AS broj_utakmica
+FROM bootcamp.northern_star.matches_flat
+WHERE season = '2023/24'
+  AND weather IN ('snow', 'fog');
+--2.1.5 25 utakmica
+
+SELECT match_id, season, kickoff_ts, home_team, away_team,home_goals, away_goals
+FROM bootcamp.northern_star.matches_flat
+WHERE (home_team = 'Northport United' AND away_team = 'Northport City')
+   OR (home_team = 'Northport City'   AND away_team = 'Northport United')
+ORDER BY kickoff_ts;
+--2.1.6 Northport United je pobedio 2 puta, Northport City jednom, jedna utakmica neresena
+
+SELECT match_id, kickoff_ts, home_team, away_team
+FROM bootcamp.northern_star.matches_flat
+WHERE season = '2024/25'
+ORDER BY kickoff_ts, match_id
+LIMIT 3;
+--2.1.7 Mozda ako se doda order by kickoff_ts, match_id se obezbedjuje redosled
+
+SELECT match_id, season, kickoff_ts, home_team, away_team, home_goals, away_goals, first_goal_scorer
+FROM bootcamp.northern_star.matches_flat
+WHERE first_goal_scorer = "Sean O'Neill";
+--2.1.8 2 utakmice

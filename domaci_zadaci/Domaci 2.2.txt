@@ -1,0 +1,61 @@
+Domaci 2.2
+
+SELECT match_id, season, home_team, away_team,home_goals, away_goals, match_report
+FROM bootcamp.northern_star.matches_flat
+WHERE match_report ILIKE '%goal%';
+--2.2.1 41 utakmica
+
+SELECT match_id, season, home_team, away_team,
+       COALESCE(referee_name, 'Unknown') AS referee_name
+FROM bootcamp.northern_star.matches_flat
+LIMIT 20;
+--2.2.2 zadatak
+
+SELECT match_id, match_report,
+       LENGTH(match_report) AS broj_znakova
+FROM bootcamp.northern_star.matches_flat
+WHERE LENGTH(match_report) > 40
+ORDER BY broj_znakova DESC;
+--2.2.3 zadatak
+
+SELECT match_id, kickoff_ts, home_team, away_team, home_goals, away_goals
+FROM bootcamp.northern_star.matches_flat
+WHERE kickoff_ts >= '2025-01-01'
+  AND kickoff_ts <  '2025-01-16'
+ORDER BY kickoff_ts;
+--2.2.4 zadatak
+
+SELECT match_id,
+       DATE(kickoff_ts) AS datum,
+       DATE_FORMAT(kickoff_ts, 'MMMM') AS dan_u_nedelji
+FROM bootcamp.northern_star.matches_flat
+WHERE DAYOFWEEK(kickoff_ts) = 6
+ORDER BY datum;
+--2.2.5 Nijedna nije odigrana petkom
+
+SELECT COUNT(*) AS broj_utakmica
+FROM bootcamp.northern_star.matches_flat
+WHERE season = '2024/25'
+  AND attendance BETWEEN 20000 AND 35000;
+-- 2.2.6 188
+
+SELECT DISTINCT first_goal_scorer
+FROM bootcamp.northern_star.matches_flat
+WHERE first_goal_scorer LIKE 'A%'
+   OR first_goal_scorer LIKE '%-%'
+ORDER BY first_goal_scorer;
+--2.2.7 22 strelca
+
+SELECT match_id, kickoff_ts, home_team, away_team
+FROM bootcamp.northern_star.matches_flat
+WHERE season = '2024/25'
+  AND DATE_FORMAT(kickoff_ts, 'HH:mm') BETWEEN '18:00' AND '21:00'
+ORDER BY kickoff_ts;
+--2.2.8 12 utakmica
+
+SELECT COUNT(*) AS broj_utakmica
+FROM bootcamp.northern_star.matches_flat
+WHERE kickoff_ts >= '2025-03-01'
+  AND kickoff_ts <  '2025-06-01'
+  AND match_report ILIKE '%win%';
+--2.2.9 5 utakmica
